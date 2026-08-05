@@ -19,7 +19,7 @@ export const productApi = api.injectEndpoints({
           status,
         },
       }),
-      providesTags: ["Products"],
+      providesTags: () => [{ type: "Product", id }],
     }),
 
     getProductById: builder.query({
@@ -27,7 +27,7 @@ export const productApi = api.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Product", id }],
     }),
 
-    postProduct: builder.mutation({
+    addProduct: builder.mutation({
       query: (newProduct) => ({
         url: "/product/createProduct",
         method: "POST",
@@ -48,7 +48,7 @@ export const productApi = api.injectEndpoints({
 });
 
 export const {
-  useGetProductQuery,
+  useGetProductsQuery,
   useGetProductByIdQuery,
   usePostProductMutation,
   useDeleteProductMutation,
