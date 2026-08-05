@@ -19,7 +19,7 @@ export const productApi = api.injectEndpoints({
           status,
         },
       }),
-      providesTags: () => [{ type: "Product", id }],
+      providesTags: ["Product", "Dashboard"],
     }),
 
     getProductById: builder.query({
@@ -42,7 +42,7 @@ export const productApi = api.injectEndpoints({
         method: "DELETE",
       }),
 
-      invalidatesTags: ["Products", "Dashboard"],
+      invalidatesTags: ["Product", "Dashboard"],
     }),
   }),
 });
@@ -50,6 +50,6 @@ export const productApi = api.injectEndpoints({
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
-  usePostProductMutation,
+  useAddProductMutation,
   useDeleteProductMutation,
 } = productApi;
