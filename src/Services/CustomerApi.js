@@ -33,7 +33,7 @@ export const customerApi = api.injectEndpoints({
       query: (newCustomer) => ({
         url: "customer/createCustomer",
         method: "POST",
-        body: "newCustomer",
+        body: newCustomer,
       }),
       invalidatesTags: ["Customer", "Dashboard"],
     }),
@@ -60,7 +60,7 @@ export const customerApi = api.injectEndpoints({
 export const {
   useGetCustomersQuery,
   useGetCustomerByIdQuery,
-  usePostCustomerMutation,
+  useAddCustomerMutation,
   useUpdateCustomerByIdMutation,
   useDeleteCustomerByIdMutation,
 } = customerApi;

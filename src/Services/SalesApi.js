@@ -20,9 +20,9 @@ export const salesApi = api.injectEndpoints({
       query: (newSale) => ({
         url: "/sales/createSales",
         method: "POST",
-        body: "newSale",
+        body: newSale,
       }),
-      invalidatesTags: ["Sales", "Dashboard"],
+      invalidatesTags: ["Sales", "Dashboard", "Product"],
     }),
 
     updateSaleById: builder.mutation({
@@ -47,7 +47,7 @@ export const salesApi = api.injectEndpoints({
 export const {
   useGetSalesQuery,
   useGetSalesByIdQuery,
-  usePostSalesMutation,
+  useAddSalesMutation,
   useUpdateSalesByIdMutation,
   useDeleteSalesByIdMutation,
 } = salesApi;

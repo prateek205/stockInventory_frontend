@@ -35,18 +35,18 @@ export const purchaseApi = api.injectEndpoints({
       query: (newPurchase) => ({
         url: "/purchase/createPurchase",
         method: "POST",
-        body: "newPurchase",
+        body: newPurchase,
       }),
-      invalidatesTags: ["Purchase", "Dashboard"],
+      invalidatesTags: ["Purchase", "Dashboard", "Product", "Sales"],
     }),
 
     updatePurchaseById: builder.mutation({
-      query: ({id, ...Purchase}) => ({
+      query: ({ id, ...Purchase }) => ({
         url: `/purchase/updatePurchase/${id}`,
         method: "PUT",
         body: "Purchase",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "purchase", id }],
+      invalidatesTags: (result, error, id) => [{ type: "Purchase", id }],
     }),
 
     deletePurchaseById: builder.mutation({
@@ -62,7 +62,7 @@ export const purchaseApi = api.injectEndpoints({
 export const {
   useGetPurchasesQuery,
   useGetPurchaseByIdQuery,
-  usePostPurchaseMutation,
+  useAddPurchaseMutation,
   useUpdatePurchaseByIdMutation,
   useDeletePurchaseByIdMutation,
 } = purchaseApi;
