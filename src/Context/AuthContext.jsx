@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 const BASE_URL = import.meta.env.VITE_BACKEND_API;
 
