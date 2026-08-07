@@ -1,42 +1,46 @@
 import React from "react";
 import {
-  FaShoppingBag,
-  FaRupeeSign,
+  FaBoxes,
   FaCheckCircle,
-  FaClock,
+  FaExclamationTriangle,
+  FaTimesCircle,
   FaPlus,
   FaSearch,
   FaEye,
   FaEdit,
-  FaPrint,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
-const Sales = () => {
-  const sales = [
+const Inventory = () => {
+  const inventory = [
     {
-      id: "SAL-1001",
-      customer: "Rahul Sharma",
-      date: "06 Aug 2026",
-      items: 5,
-      amount: "₹28,500",
-      status: "Paid",
+      id: 1,
+      product: "HP Laptop",
+      sku: "HP-1001",
+      category: "Electronics",
+      stock: 25,
+      cost: "₹45,000",
+      value: "₹11,25,000",
+      status: "In Stock",
     },
     {
-      id: "SAL-1002",
-      customer: "Sneha Patil",
-      date: "05 Aug 2026",
-      items: 2,
-      amount: "₹9,200",
-      status: "Pending",
+      id: 2,
+      product: "Wireless Mouse",
+      sku: "MS-2034",
+      category: "Accessories",
+      stock: 6,
+      cost: "₹450",
+      value: "₹2,700",
+      status: "Low Stock",
     },
     {
-      id: "SAL-1003",
-      customer: "Amit Joshi",
-      date: "04 Aug 2026",
-      items: 8,
-      amount: "₹46,000",
-      status: "Paid",
+      id: 3,
+      product: "Mechanical Keyboard",
+      sku: "KB-5002",
+      category: "Accessories",
+      stock: 0,
+      cost: "₹1,800",
+      value: "₹0",
+      status: "Out of Stock",
     },
   ];
 
@@ -45,123 +49,135 @@ const Sales = () => {
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Sales</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Inventory</h1>
+
           <p className="text-gray-500 mt-1">
-            Manage customer sales and invoices.
+            Monitor stock availability and inventory value.
           </p>
         </div>
 
-        <Link to="/forms" state={{activeForm:"sales"}}>
         <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg">
           <FaPlus />
-          New Sale
+          Stock Adjustment
         </button>
-        </Link>
       </div>
 
       {/* Summary Cards */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <div className="bg-white rounded-xl shadow p-5 flex justify-between items-center">
           <div>
-            <p className="text-gray-500">Total Sales</p>
-            <h2 className="text-3xl font-bold">410</h2>
+            <p className="text-gray-500">Total Items</p>
+            <h2 className="text-3xl font-bold">250</h2>
           </div>
-          <FaShoppingBag className="text-4xl text-blue-500" />
+
+          <FaBoxes className="text-4xl text-blue-500" />
         </div>
 
         <div className="bg-white rounded-xl shadow p-5 flex justify-between items-center">
           <div>
-            <p className="text-gray-500">Revenue</p>
-            <h2 className="text-3xl font-bold">₹14.2L</h2>
+            <p className="text-gray-500">In Stock</p>
+            <h2 className="text-3xl font-bold">220</h2>
           </div>
-          <FaRupeeSign className="text-4xl text-green-600" />
-        </div>
 
-        <div className="bg-white rounded-xl shadow p-5 flex justify-between items-center">
-          <div>
-            <p className="text-gray-500">Paid</p>
-            <h2 className="text-3xl font-bold">372</h2>
-          </div>
           <FaCheckCircle className="text-4xl text-green-500" />
         </div>
 
         <div className="bg-white rounded-xl shadow p-5 flex justify-between items-center">
           <div>
-            <p className="text-gray-500">Pending</p>
-            <h2 className="text-3xl font-bold">38</h2>
+            <p className="text-gray-500">Low Stock</p>
+            <h2 className="text-3xl font-bold">18</h2>
           </div>
-          <FaClock className="text-4xl text-yellow-500" />
+
+          <FaExclamationTriangle className="text-4xl text-yellow-500" />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-5 flex justify-between items-center">
+          <div>
+            <p className="text-gray-500">Out of Stock</p>
+            <h2 className="text-3xl font-bold">12</h2>
+          </div>
+
+          <FaTimesCircle className="text-4xl text-red-500" />
         </div>
       </div>
 
       {/* Filters */}
+
       <div className="bg-white rounded-xl shadow p-4 flex flex-wrap justify-between gap-4">
         <div className="relative w-full md:w-80">
           <FaSearch className="absolute left-4 top-4 text-gray-400" />
 
           <input
             type="text"
-            placeholder="Search Sale..."
+            placeholder="Search Product..."
             className="w-full border rounded-lg py-3 pl-11 pr-4 focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
 
         <div className="flex flex-wrap gap-3">
           <select className="border rounded-lg px-4 py-3">
-            <option>All Customers</option>
-            <option>Rahul Sharma</option>
-            <option>Sneha Patil</option>
+            <option>All Categories</option>
+            <option>Electronics</option>
+            <option>Accessories</option>
           </select>
 
           <select className="border rounded-lg px-4 py-3">
             <option>All Status</option>
-            <option>Paid</option>
-            <option>Pending</option>
+            <option>In Stock</option>
+            <option>Low Stock</option>
+            <option>Out of Stock</option>
           </select>
-
-          <input type="date" className="border rounded-lg px-4 py-3" />
         </div>
       </div>
 
-      {/* Sales Table */}
+      {/* Inventory Table */}
+
       <div className="bg-white rounded-xl shadow overflow-x-auto">
         <table className="min-w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-4 text-left">Invoice</th>
-              <th className="px-6 py-4 text-left">Customer</th>
-              <th className="px-6 py-4 text-left">Date</th>
-              <th className="px-6 py-4 text-center">Items</th>
-              <th className="px-6 py-4 text-right">Amount</th>
+              <th className="px-6 py-4 text-left">Product</th>
+              <th className="px-6 py-4 text-left">SKU</th>
+              <th className="px-6 py-4 text-left">Category</th>
+              <th className="px-6 py-4 text-center">Available</th>
+              <th className="px-6 py-4 text-right">Cost</th>
+              <th className="px-6 py-4 text-right">Stock Value</th>
               <th className="px-6 py-4 text-center">Status</th>
               <th className="px-6 py-4 text-center">Action</th>
             </tr>
           </thead>
 
           <tbody>
-            {sales.map((sale) => (
-              <tr key={sale.id} className="border-t hover:bg-gray-50">
-                <td className="px-6 py-4 font-semibold">{sale.id}</td>
+            {inventory.map((item) => (
+              <tr key={item.id} className="border-t hover:bg-gray-50">
+                <td className="px-6 py-4 font-semibold">{item.product}</td>
 
-                <td className="px-6 py-4">{sale.customer}</td>
+                <td className="px-6 py-4">{item.sku}</td>
 
-                <td className="px-6 py-4">{sale.date}</td>
+                <td className="px-6 py-4">{item.category}</td>
 
-                <td className="px-6 py-4 text-center">{sale.items}</td>
+                <td className="px-6 py-4 text-center font-semibold">
+                  {item.stock}
+                </td>
+
+                <td className="px-6 py-4 text-right">{item.cost}</td>
 
                 <td className="px-6 py-4 text-right font-semibold">
-                  {sale.amount}
+                  {item.value}
                 </td>
 
                 <td className="px-6 py-4 text-center">
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      sale.status === "Paid"
+                      item.status === "In Stock"
                         ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
+                        : item.status === "Low Stock"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-red-100 text-red-700"
                     }`}
                   >
-                    {sale.status}
+                    {item.status}
                   </span>
                 </td>
 
@@ -174,10 +190,6 @@ const Sales = () => {
                     <button className="text-green-600 hover:text-green-800">
                       <FaEdit />
                     </button>
-
-                    <button className="text-purple-600 hover:text-purple-800">
-                      <FaPrint />
-                    </button>
                   </div>
                 </td>
               </tr>
@@ -187,6 +199,7 @@ const Sales = () => {
       </div>
 
       {/* Pagination */}
+
       <div className="flex justify-end gap-2">
         <button className="border px-4 py-2 rounded-lg hover:bg-gray-100">
           Previous
@@ -212,4 +225,4 @@ const Sales = () => {
   );
 };
 
-export default Sales;
+export default Inventory;
