@@ -7,8 +7,11 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import { FaBars } from "react-icons/fa";
+import LoginModal from "../Modals/loginModal";
 
 const Navbar = ({ collapsed, setCollapsed }) => {
+  const [openLogin, setOpenLogin] = useState(false);
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
       <div className="flex items-center justify-between h-20 px-8">
@@ -26,21 +29,13 @@ const Navbar = ({ collapsed, setCollapsed }) => {
           <div className="w-px h-10 bg-gray-300"></div>
 
           {/* Profile */}
-          <button className="flex items-center gap-3 hover:bg-gray-100 rounded-xl p-2 transition">
-            <img
-              src="https://i.pravatar.cc/150?img=12"
-              alt="Admin"
-              className="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
-            />
-
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-800">Admin</h3>
-
-              <p className="text-sm text-gray-500">Super Admin</p>
-            </div>
-
-            <FaChevronDown className="text-gray-500" />
+          <button
+            onClick={() => setOpenLogin(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          >
+            Admin Login
           </button>
+          <LoginModal isOpen={openLogin} onClose={() => setOpenLogin(false)} />
         </div>
       </div>
     </header>
