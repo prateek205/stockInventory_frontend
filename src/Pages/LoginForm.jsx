@@ -1,10 +1,41 @@
 import React, { useState } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-
 import loginImage from "/images/login_image.png";
+import { useAddLoginMutation } from "../Services/LoginApi";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [login] = useAddLoginMutation();
+
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await login(formData);
+
+      console.log(response);
+
+      navigate("/dashboard")
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-5">
@@ -27,7 +58,7 @@ const LoginForm = () => {
 
             <p className="text-gray-500 mt-2 mb-8">Login to continue</p>
 
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email */}
 
               <div>
@@ -38,6 +69,9 @@ const LoginForm = () => {
 
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="admin@gmail.com"
                     className="w-full border rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
@@ -55,6 +89,9 @@ const LoginForm = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="********"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
                     className="w-full border rounded-xl pl-12 pr-12 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
 

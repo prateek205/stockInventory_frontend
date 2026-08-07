@@ -13,13 +13,21 @@ import Profile from "./Pages/Profile";
 import Reports from "./Pages/Reports";
 import Inventory from "./Pages/Inventory";
 import Form from "./Pages/Forms/Form";
+import ProtectedRoute from "./Components/Routes/ProtectedRoute";
 
 const App = () => {
   return (
     <>
       <Routes>
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/" element={<Layout />}>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="forms" element={<Form />} />
           <Route path="customer" element={<Customer />} />
