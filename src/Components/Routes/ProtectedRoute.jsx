@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { useGetProfileQuery } from "../../Services/LoginApi";
-import { Navigate } from "react-router-dom";
-import LoginModal from "../Modals/loginModal";
 
 const ProtectedRoute = ({ children }) => {
-  const { data } = useGetProfileQuery();
-  const [openLogin, setOpenLogin] = useState(true);
+  const { isLoading } = useGetProfileQuery();
 
-  if (!data?.success) {
+  if (isLoading) {
     return (
-      <LoginModal isOpen={openLogin} onClose={() => setOpenLogin(false)} />
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
     );
   }
 
+  // Always render the application
   return children;
 };
 

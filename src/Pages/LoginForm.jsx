@@ -4,7 +4,7 @@ import loginImage from "/images/login_image.png";
 import { useAddLoginMutation } from "../Services/LoginApi";
 import { useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+const LoginForm = ({onClose}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -30,6 +30,8 @@ const LoginForm = () => {
       const response = await login(formData);
 
       console.log(response);
+
+      onClose?.()
 
       navigate("/dashboard")
     } catch (error) {

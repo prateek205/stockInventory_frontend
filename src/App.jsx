@@ -19,7 +19,6 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/login" element={<LoginForm />} />
         <Route
           path="/"
           element={

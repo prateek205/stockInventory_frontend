@@ -14,8 +14,13 @@ import {
   FaSave,
   FaLock,
 } from "react-icons/fa";
+import { useGetProfileQuery } from "../Services/LoginApi";
 
 const Profile = () => {
+  const { data } = useGetProfileQuery();
+
+  const admin = data?.admin;
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -29,23 +34,15 @@ const Profile = () => {
 
       <div className="bg-white rounded-xl shadow p-8">
         <div className="flex flex-col lg:flex-row items-center gap-8">
-          <div className="relative">
-            <FaUserCircle className="text-[150px] text-blue-500" />
-
-            <button className="absolute bottom-2 right-2 bg-blue-600 text-white p-3 rounded-full">
-              <FaCamera />
-            </button>
-          </div>
-
           <div>
-            <h2 className="text-3xl font-bold">Admin User</h2>
+            <h2 className="text-3xl font-bold">{admin.name}</h2>
 
-            <p className="text-gray-500 mt-2">Super Administrator</p>
+            <p className="text-gray-500 mt-2">Admin user</p>
 
             <div className="mt-5 space-y-3">
               <p className="flex items-center gap-3">
                 <FaEnvelope className="text-blue-500" />
-                admin@gmail.com
+                {admin.email}
               </p>
 
               <p className="flex items-center gap-3">
@@ -55,7 +52,7 @@ const Profile = () => {
 
               <p className="flex items-center gap-3">
                 <FaMapMarkerAlt className="text-red-500" />
-                Pune, Maharashtra
+                Chhatrapati Sambhajinagar, Maharashtra
               </p>
             </div>
           </div>
@@ -67,10 +64,6 @@ const Profile = () => {
       <div className="bg-white rounded-xl shadow p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">Personal Information</h2>
-
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
-            Edit Profile
-          </button>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -78,7 +71,7 @@ const Profile = () => {
             <label className="text-gray-500 text-sm">Full Name</label>
 
             <input
-              value="Admin User"
+              value={admin.name}
               readOnly
               className="w-full border rounded-lg mt-2 p-3 bg-gray-50"
             />
@@ -88,17 +81,7 @@ const Profile = () => {
             <label className="text-gray-500 text-sm">Email</label>
 
             <input
-              value="admin@gmail.com"
-              readOnly
-              className="w-full border rounded-lg mt-2 p-3 bg-gray-50"
-            />
-          </div>
-
-          <div>
-            <label className="text-gray-500 text-sm">Phone</label>
-
-            <input
-              value="+91 9876543210"
+              value={admin.email}
               readOnly
               className="w-full border rounded-lg mt-2 p-3 bg-gray-50"
             />
@@ -115,16 +98,6 @@ const Profile = () => {
           </div>
 
           <div>
-            <label className="text-gray-500 text-sm">Joined Date</label>
-
-            <input
-              value="01 Jan 2026"
-              readOnly
-              className="w-full border rounded-lg mt-2 p-3 bg-gray-50"
-            />
-          </div>
-
-          <div>
             <label className="text-gray-500 text-sm">Status</label>
 
             <input
@@ -134,41 +107,6 @@ const Profile = () => {
             />
           </div>
         </div>
-      </div>
-
-      {/* Change Password */}
-
-      <div className="bg-white rounded-xl shadow p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <FaLock className="text-blue-600 text-xl" />
-
-          <h2 className="text-xl font-bold">Change Password</h2>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-5">
-          <input
-            type="password"
-            placeholder="Current Password"
-            className="border rounded-lg p-3"
-          />
-
-          <input
-            type="password"
-            placeholder="New Password"
-            className="border rounded-lg p-3"
-          />
-
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            className="border rounded-lg p-3"
-          />
-        </div>
-
-        <button className="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg flex items-center gap-2">
-          <FaSave />
-          Update Password
-        </button>
       </div>
 
       {/* Statistics */}

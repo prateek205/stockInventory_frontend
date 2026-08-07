@@ -6,14 +6,14 @@ const LoginModal = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
         className="relative w-[1000px] h-[550px] max-w-6xl flex items-center justify-center bg-white rounded-2xl overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <LoginForm />
+        <LoginForm onClose={onClose} />
       </div>
     </div>
   );
