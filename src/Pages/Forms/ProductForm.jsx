@@ -147,7 +147,10 @@ const ProductForm = () => {
             Product Image
           </label>
 
-          <input type="file" className="w-full border rounded-lg px-4 py-2" />
+          <input
+            placeholder="ImgUrl"
+            className="w-full border rounded-lg px-4 py-3"
+          />
         </div>
 
         {/* Description */}

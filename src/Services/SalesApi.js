@@ -29,7 +29,7 @@ export const salesApi = api.injectEndpoints({
       query: ({ id, ...sale }) => ({
         url: `/sales/updateSale/${id}`,
         method: "PUT",
-        body: "sale",
+        body: sale,
       }),
       invalidatesTags: (result, error, id) => [{ type: "Sales", id }],
     }),

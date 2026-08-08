@@ -42,7 +42,7 @@ export const customerApi = api.injectEndpoints({
       query: ({ id, ...customer }) => ({
         url: `customer/updateCustomer/${id}`,
         method: "PUT",
-        body: "customer",
+        body: customer,
       }),
       invalidatesTags: (result, error, id) => [{ type: "Customer", id }],
     }),

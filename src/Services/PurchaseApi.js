@@ -44,7 +44,7 @@ export const purchaseApi = api.injectEndpoints({
       query: ({ id, ...Purchase }) => ({
         url: `/purchase/updatePurchase/${id}`,
         method: "PUT",
-        body: "Purchase",
+        body: Purchase,
       }),
       invalidatesTags: (result, error, id) => [{ type: "Purchase", id }],
     }),

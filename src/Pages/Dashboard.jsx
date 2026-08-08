@@ -8,76 +8,125 @@ import {
   FaArrowDown,
 } from "react-icons/fa";
 
+import { useGetDashboardQuery } from "../Services/DashboardApi";
+
 const Dashboard = () => {
+  const { data, isLoading, isError, error, refetch } = useGetDashboardQuery();
+
+  // ==============================
+  // LOADING
+  // ==============================
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <p className="text-lg text-gray-500">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  // ==============================
+  // ERROR
+  // ==============================
+
+  if (isError) {
+    console.error("Dashboard Error:", error);
+
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4">
+        <p className="text-lg text-red-500">Failed to load dashboard data.</p>
+
+        <button
+          onClick={refetch}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  // ==============================
+  // BACKEND DATA
+  // ==============================
+
+  const dashboard = data?.dashboard || {};
+
+  const {
+    totalProducts = 0,
+    totalDealers = 0,
+    totalCustomers = 0,
+
+    totalPurchase = 0,
+    totalSales = 0,
+
+    totalPurchaseAmount = 0,
+    totalSalesAmount = 0,
+    totalProfit = 0,
+
+    availableStock = 0,
+    lowStockProducts = 0,
+    outOfStock = 0,
+
+    todaysPurchaseAmount = 0,
+    todaysSalesAmount = 0,
+
+    monthlyPurchase = [],
+    monthlySales = [],
+
+    recentPurchase = [],
+    recentSales = [],
+  } = dashboard;
+
+  // ==============================
+  // DASHBOARD CARDS
+  // ==============================
+
   const cards = [
     {
       title: "Total Products",
-      value: "250",
+      value: totalProducts,
       icon: <FaBoxOpen />,
       color: "bg-blue-500",
-      change: "+12%",
-      status: "up",
     },
+
     {
       title: "Dealers",
-      value: "45",
+      value: totalDealers,
       icon: <FaUsers />,
       color: "bg-green-500",
-      change: "+8%",
-      status: "up",
     },
+
     {
       title: "Today's Sales",
-      value: "₹28,500",
+      value: `₹${Number(todaysSalesAmount).toLocaleString("en-IN")}`,
       icon: <FaShoppingCart />,
       color: "bg-orange-500",
-      change: "+15%",
-      status: "up",
     },
+
     {
-      title: "Monthly Revenue",
-      value: "₹5,42,000",
+      title: "Total Revenue",
+      value: `₹${Number(totalSalesAmount).toLocaleString("en-IN")}`,
       icon: <FaRupeeSign />,
       color: "bg-purple-500",
-      change: "-2%",
-      status: "down",
-    },
-  ];
-
-  const lowStock = [
-    {
-      id: 1,
-      product: "HP Laptop",
-      stock: 4,
-    },
-    {
-      id: 2,
-      product: "Logitech Mouse",
-      stock: 6,
-    },
-    {
-      id: 3,
-      product: "Samsung Monitor",
-      stock: 2,
-    },
-    {
-      id: 4,
-      product: "Keyboard",
-      stock: 8,
     },
   ];
 
   return (
-    <div className="bg-gray-100 min-h-screen space-y-6">
-      {/* Heading */}
+    <div className="p-6">
+      {/* ==============================
+          HEADING
+      ============================== */}
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
 
-        <p className="text-gray-500">Stock Inventory Overview</p>
+        <p className="text-gray-500 mt-1">Stock Inventory Overview</p>
       </div>
 
-      {/* Cards */}
+      {/* ==============================
+          CARDS
+      ============================== */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {cards.map((card, index) => (
@@ -85,21 +134,13 @@ const Dashboard = () => {
             key={index}
             className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition"
           >
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <div>
                 <p className="text-gray-500">{card.title}</p>
 
-                <h2 className="text-3xl font-bold mt-2">{card.value}</h2>
-
-                <div
-                  className={`flex items-center mt-4 text-sm ${
-                    card.status === "up" ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {card.status === "up" ? <FaArrowUp /> : <FaArrowDown />}
-
-                  <span className="ml-2">{card.change} this month</span>
-                </div>
+                <h2 className="text-3xl font-bold mt-2 text-gray-800">
+                  {card.value}
+                </h2>
               </div>
 
               <div
@@ -112,96 +153,250 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Charts */}
+      {/* ==============================
+          INVENTORY SUMMARY
+      ============================== */}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        {/* Available Stock */}
+
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <p className="text-gray-500">Available Stock</p>
+
+          <h2 className="text-3xl font-bold mt-2">{availableStock}</h2>
+
+          <p className="text-green-600 mt-2">Units available</p>
+        </div>
+
+        {/* Low Stock */}
+
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <p className="text-gray-500">Low Stock Products</p>
+
+          <h2 className="text-3xl font-bold mt-2">{lowStockProducts}</h2>
+
+          <p className="text-yellow-600 mt-2">Need attention</p>
+        </div>
+
+        {/* Out of Stock */}
+
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <p className="text-gray-500">Out of Stock</p>
+
+          <h2 className="text-3xl font-bold mt-2">{outOfStock}</h2>
+
+          <p className="text-red-600 mt-2">Products unavailable</p>
+        </div>
+      </div>
+
+      {/* ==============================
+          FINANCIAL SUMMARY
+      ============================== */}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        {/* Purchase */}
+
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-500">Total Purchase</p>
+
+              <h2 className="text-2xl font-bold mt-2">
+                ₹{Number(totalPurchaseAmount).toLocaleString("en-IN")}
+              </h2>
+            </div>
+
+            <FaArrowDown className="text-red-500 text-2xl" />
+          </div>
+        </div>
+
+        {/* Sales */}
+
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-500">Total Sales</p>
+
+              <h2 className="text-2xl font-bold mt-2">
+                ₹{Number(totalSalesAmount).toLocaleString("en-IN")}
+              </h2>
+            </div>
+
+            <FaArrowUp className="text-green-500 text-2xl" />
+          </div>
+        </div>
+
+        {/* Profit */}
+
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-500">Total Profit</p>
+
+              <h2
+                className={`text-2xl font-bold mt-2 ${
+                  totalProfit >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                ₹{Number(totalProfit).toLocaleString("en-IN")}
+              </h2>
+            </div>
+
+            {totalProfit >= 0 ? (
+              <FaArrowUp className="text-green-500 text-2xl" />
+            ) : (
+              <FaArrowDown className="text-red-500 text-2xl" />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ==============================
+          CHARTS
+      ============================== */}
 
       <div className="grid lg:grid-cols-2 gap-6 mt-8">
+        {/* Sales Chart */}
+
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold mb-5">Sales Overview</h2>
 
           <div className="h-72 flex items-center justify-center border-2 border-dashed rounded-xl text-gray-400">
-            📈 Sales Chart
+            <div className="text-center">
+              <p className="text-3xl mb-2">📈</p>
+
+              <p>Sales Chart</p>
+
+              <p className="text-sm mt-2">
+                {monthlySales.length} months available
+              </p>
+            </div>
           </div>
         </div>
+
+        {/* Purchase Chart */}
 
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold mb-5">Purchase Overview</h2>
 
           <div className="h-72 flex items-center justify-center border-2 border-dashed rounded-xl text-gray-400">
-            📊 Purchase Chart
+            <div className="text-center">
+              <p className="text-3xl mb-2">📊</p>
+
+              <p>Purchase Chart</p>
+
+              <p className="text-sm mt-2">
+                {monthlyPurchase.length} months available
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Section */}
+      {/* ==============================
+          RECENT SALES
+      ============================== */}
 
-      <div className="grid lg:grid-cols-3 gap-6 mt-8">
-        {/* Low Stock */}
+      <div className="bg-white rounded-2xl shadow-md p-6 mt-8">
+        <h2 className="text-xl font-semibold mb-5">Recent Sales</h2>
 
-        <div className="lg:col-span-1 bg-white rounded-2xl shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-5">Low Stock Alert</h2>
-
-          {lowStock.map((item) => (
-            <div key={item.id} className="flex justify-between py-3 border-b">
-              <span>{item.product}</span>
-
-              <span className="text-red-500 font-semibold">
-                {item.stock} Left
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Recent Sales */}
-
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-5">Recent Sales</h2>
-
+        <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b">
                 <th className="text-left py-3">Customer</th>
 
-                <th className="text-left">Product</th>
+                <th className="text-left py-3">Amount</th>
 
-                <th className="text-left">Amount</th>
-
-                <th className="text-left">Status</th>
+                <th className="text-left py-3">Date</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr className="border-b">
-                <td className="py-4">Rahul</td>
-                <td>HP Laptop</td>
-                <td>₹65,000</td>
-                <td>
-                  <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full">
-                    Paid
-                  </span>
-                </td>
-              </tr>
+              {recentSales.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="text-center py-6 text-gray-500">
+                    No recent sales.
+                  </td>
+                </tr>
+              ) : (
+                recentSales.map((sale) => (
+                  <tr key={sale._id} className="border-b hover:bg-gray-50">
+                    <td className="py-4">
+                      {sale.customer?.customerName ||
+                        sale.customerName ||
+                        "Unknown Customer"}
+                    </td>
 
-              <tr className="border-b">
-                <td className="py-4">Amit</td>
-                <td>Mouse</td>
-                <td>₹850</td>
-                <td>
-                  <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
-                    Pending
-                  </span>
-                </td>
-              </tr>
+                    <td>
+                      ₹{Number(sale.totalAmount || 0).toLocaleString("en-IN")}
+                    </td>
 
-              <tr>
-                <td className="py-4">Sneha</td>
-                <td>Keyboard</td>
-                <td>₹1,200</td>
-                <td>
-                  <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full">
-                    Paid
-                  </span>
-                </td>
+                    <td>
+                      {sale.createdAt
+                        ? new Date(sale.createdAt).toLocaleDateString("en-IN")
+                        : "-"}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ==============================
+          RECENT PURCHASES
+      ============================== */}
+
+      <div className="bg-white rounded-2xl shadow-md p-6 mt-8">
+        <h2 className="text-xl font-semibold mb-5">Recent Purchases</h2>
+
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-3">Dealer</th>
+
+                <th className="text-left py-3">Amount</th>
+
+                <th className="text-left py-3">Date</th>
               </tr>
+            </thead>
+
+            <tbody>
+              {recentPurchase.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="text-center py-6 text-gray-500">
+                    No recent purchases.
+                  </td>
+                </tr>
+              ) : (
+                recentPurchase.map((purchase) => (
+                  <tr key={purchase._id} className="border-b hover:bg-gray-50">
+                    <td className="py-4">
+                      {purchase.dealer?.dealerName ||
+                        purchase.dealerName ||
+                        "Unknown Dealer"}
+                    </td>
+
+                    <td>
+                      ₹
+                      {Number(purchase.totalAmount || 0).toLocaleString(
+                        "en-IN",
+                      )}
+                    </td>
+
+                    <td>
+                      {purchase.createdAt
+                        ? new Date(purchase.createdAt).toLocaleDateString(
+                            "en-IN",
+                          )
+                        : "-"}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
