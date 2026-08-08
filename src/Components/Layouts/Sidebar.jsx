@@ -57,11 +57,11 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       icon: <FaWarehouse />,
       path: "/inventory",
     },
-    {
-      name: "Reports",
-      icon: <FaChartBar />,
-      path: "/report",
-    },
+    // {
+    //   name: "Reports",
+    //   icon: <FaChartBar />,
+    //   path: "/report",
+    // },
     {
       name: "Profile",
       icon: <FaCog />,
